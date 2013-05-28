@@ -1,7 +1,7 @@
 # Maintainer: Chris Down <chris@chrisdown.name>
 
 pkgname=mpdmenu
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="Simple dmenu frontend for MPD"
 url="http://github.com/cdown/mpdmenu"
@@ -12,7 +12,7 @@ depends=( dmenu )
 source=(
     "https://github.com/cdown/mpdmenu/archive/v${pkgver}.zip"
 )
-md5sums=('d7c785de08255b8198c701e5f6112133')
+md5sums=('1b7fa7856681cf48ff221fff8a11147d')
 
 package() {
     install -D -m755 \
