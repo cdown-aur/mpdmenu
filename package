@@ -1,0 +1,35 @@
+#!/bin/bash
+
+pkgver=$1
+pkgrel=$2
+
+[[ $pkgver && $pkgrel ]] || exit 1
+
+tag="$pkgver-$pkgrel"
+
+if git show "$tag" &>/dev/null; then
+    printf 'fatal: tag "%s" already exists\n' "$tag"
+    exit 1
+fi
+
+git clean -dfx
+
+sed -i \
+    -e "s|^pkgver=.*|pkgver=$pkgver|" \
+    -e "s|^pkgrel=.*|pkgrel=$pkgrel|" \
+        PKGBUILD
+
+md5sums=$(makepkg -g)
+sed -i -e "s|^md5sums=.*|$md5sums|" PKGBUILD
+
+git commit -am "Release: $tag"
+git tag -a "$tag" -m "$tag"
+
+makepkg -s
+makepkg --source
+
+cat << EOF
+burp *.src.tar.gz
+git push origin HEAD
+git push origin $tag
+EOF
